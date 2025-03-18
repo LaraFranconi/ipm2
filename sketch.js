@@ -137,44 +137,38 @@ function printAndSavePerformance()
 }
 
 // Mouse button was pressed - lets test to see if hit was in the correct target
-function mousePressed() 
-{
-  // Only look for mouse releases during the actual test
-  // (i.e., during target selections)
-  if (draw_targets)
-  {
-    for (var i = 0; i < legendas.getRowCount(); i++)
-    {
-      // Check if the user clicked over one of the targets
-      if (targets[i].clicked(mouseX, mouseY)) 
-      {
-        // Checks if it was the correct target
-        if (targets[i].id === trials[current_trial] + 1) hits++;
-        else misses++;
-        
-        current_trial++;              // Move on to the next trial/target
+function mousePressed() {
+  if (draw_targets) {
+    for (var i = 0; i < legendas.getRowCount(); i++) {
+      if (targets[i].clicked(mouseX, mouseY)) {
+        if (targets[i].id === trials[current_trial] + 1) {
+          hits++;
+          targets[i].clickedState = "correct"; // Marca como certo (verde)
+        } else {
+          misses++;
+          targets[i].clickedState = "wrong"; // Marca como errado (vermelho)
+        }
+
+        current_trial++; // Passa para a próxima tentativa
         break;
       }
     }
-    
-    // Check if the user has completed all trials
-    if (current_trial === NUM_OF_TRIALS)
-    {
+
+    // Se terminamos todas as tentativas
+    if (current_trial === NUM_OF_TRIALS) {
       testEndTime = millis();
-      draw_targets = false;          // Stop showing targets and the user performance results
-      printAndSavePerformance();     // Print the user's results on-screen and send these to the DB
-      attempt++;                      
-      
-      // If there's an attempt to go create a button to start this
-      if (attempt < 2)
-      {
+      draw_targets = false;
+      printAndSavePerformance();
+      attempt++;
+
+      if (attempt < 2) {
         continue_button = createButton('START 2ND ATTEMPT');
         continue_button.mouseReleased(continueTest);
-        continue_button.position(width/2 - continue_button.size().width/2, height/2 - continue_button.size().height/2);
+        continue_button.position(width / 2 - continue_button.size().width / 2, height / 2 - continue_button.size().height / 2);
       }
+    } else if (current_trial === 1) {
+      testStartTime = millis();
     }
-    // Check if this was the first selection in an attempt
-    else if (current_trial === 1) testStartTime = millis(); 
   }
 }
 
@@ -195,32 +189,41 @@ function continueTest()
   draw_targets = true; 
 }
 
-// Creates and positions the UI targets
-function createTargets(target_size, horizontal_gap, vertical_gap)
-{
-  // Define the margins between targets by dividing the white space 
-  // for the number of targets minus one
-  h_margin = horizontal_gap / (GRID_COLUMNS -1);
-  v_margin = vertical_gap / (GRID_ROWS - 1);
+function createTargets(target_size, horizontal_gap, vertical_gap) {
+  let h_margin = horizontal_gap / (GRID_COLUMNS - 1);
+  let v_margin = vertical_gap / (GRID_ROWS - 1);
   
-  // Set targets in a 8 x 10 grid
-  for (var r = 0; r < GRID_ROWS; r++)
-  {
-    for (var c = 0; c < GRID_COLUMNS; c++)
-    {
-      let target_x = 40 + (h_margin + target_size) * c + target_size/2;        // give it some margin from the left border
-      let target_y = (v_margin + target_size) * r + target_size/2;
+  // Criamos um array auxiliar para ordenar
+  let sorted_legendas = [];
+  
+  for (let i = 0; i < legendas.getRowCount(); i++) {
+    sorted_legendas.push({
+      id: legendas.getNum(i, 0), 
+      label: legendas.getString(i, 1)
+    });
+  }
+  
+  // Ordenamos alfabeticamente pelo nome
+  sorted_legendas.sort((a, b) => a.label.localeCompare(b.label));
+  
+  // Criamos os targets na nova ordem
+  for (let r = 0; r < GRID_ROWS; r++) {
+    for (let c = 0; c < GRID_COLUMNS; c++) {
+      let index = c + GRID_COLUMNS * r;
+      if (index >= sorted_legendas.length) break; // Evita erro se houver menos de 80 itens
       
-      // Find the appropriate label and ID for this target
-      let legendas_index = c + GRID_COLUMNS * r;
-      let target_id = legendas.getNum(legendas_index, 0);  
-      let target_label = legendas.getString(legendas_index, 1);   
+      let target_x = 40 + (h_margin + target_size) * c + target_size / 2;
+      let target_y = (v_margin + target_size) * r + target_size / 2;
+      
+      let target_id = sorted_legendas[index].id;
+      let target_label = sorted_legendas[index].label;
       
       let target = new Target(target_x, target_y + 40, target_size, target_label, target_id);
       targets.push(target);
-    }  
+    }
   }
 }
+
 
 // Is invoked when the canvas is resized (e.g., when we go fullscreen)
 function windowResized() 
