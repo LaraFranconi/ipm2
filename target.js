@@ -35,14 +35,11 @@ class Target {
     textFont("Arial", 15);
     fill(color(0, 0, 0));
     textAlign(CENTER);
-
-    // Primeira letra em negrito
     textStyle(BOLD);
-    text(this.label.charAt(0), this.x - textWidth(this.label.slice(1)) / 2, this.y);
-
-    // Restante do texto normal
-    textStyle(NORMAL);
-    text(this.label.slice(1), this.x + textWidth(this.label.charAt(0)) / 2, this.y);
+    const lines = this.label.split(/[- ]/); // Split no texto em caso de espaço/hífen
+    for (let i = 0; i < lines.length; i++) {
+      text(lines[i], this.x, this.y - (lines.length - 1) * 10 + i * 20); // Adjust vertical spacing
+    }
 
   }
 }

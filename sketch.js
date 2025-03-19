@@ -55,7 +55,7 @@ function draw()
   if (draw_targets && attempt < 2)
   {     
     // The user is interacting with the 6x3 target grid
-    background(color(110,110,110));        // sets background to grey
+    background(color(0,0,0));        // sets background to black
     
     // Print trial count at the top left-corner of the canvas
     textFont("Arial", 16);
