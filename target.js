@@ -7,6 +7,13 @@ class Target {
     this.label = l;
     this.id = id;
     this.clickedState = null; // null = não clicado, 'correct' = certo, 'wrong' = errado
+
+
+  }
+
+  // Função que reseta o botão para o estado original
+  reset() {
+    this.clickedState = null;
   }
 
   // Verifica se o clique foi dentro do círculo
@@ -21,7 +28,7 @@ class Target {
     } else if (this.clickedState === "wrong") {
       fill(color(200, 0, 0)); // Vermelho se foi errado
     } else {
-      fill(color(173, 216, 230)); // Amarelo padrão
+      fill(color(173, 216, 230)); // Azul padrão
     }
 
     circle(this.x, this.y, this.width);

@@ -178,6 +178,11 @@ function continueTest()
   // Re-randomize the trial order
   randomizeTrials();
   
+  //Reset all targets
+  for (let target of targets) {
+    target.reset();
+  }
+
   // Resets performance variables
   hits = 0;
   misses = 0;
