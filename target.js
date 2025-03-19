@@ -25,8 +25,6 @@ class Target {
   draw() {
     if (this.clickedState === "correct") {
       fill(color(0, 200, 0)); // Verde se foi o correto
-    } else if (this.clickedState === "wrong") {
-      fill(color(200, 0, 0)); // Vermelho se foi errado
     } else {
       fill(color(173, 216, 230)); // Azul padrão
     }
@@ -37,6 +35,14 @@ class Target {
     textFont("Arial", 15);
     fill(color(0, 0, 0));
     textAlign(CENTER);
-    text(this.label, this.x, this.y);
+
+    // Primeira letra em negrito
+    textStyle(BOLD);
+    text(this.label.charAt(0), this.x - textWidth(this.label.slice(1)) / 2, this.y);
+
+    // Restante do texto normal
+    textStyle(NORMAL);
+    text(this.label.slice(1), this.x + textWidth(this.label.charAt(0)) / 2, this.y);
+
   }
 }
