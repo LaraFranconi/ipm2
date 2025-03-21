@@ -26,7 +26,7 @@ class Target {
     if (this.clickedState === "correct") {
       circleColor = color(0, 200, 0); // Verde se correto
     } else {
-      circleColor = color(173, 216, 230); // Azul padrão
+      circleColor = color(37, 150, 186); // Azul padrão
     }
 
     fill(circleColor);
