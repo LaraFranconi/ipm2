@@ -1,11 +1,11 @@
 // Função que devolve a cor de cada letra
 function getColorFromLetter(letter) {
   const colors = {
-    B: [102, 255, 102], H: [102, 255, 102], M: [102, 255, 102], T: [102, 255, 102], Z: [102, 255, 102], // verde
+    B: [255, 178, 102], H: [255, 178, 102], M: [255, 178, 102], T: [255, 178, 102], Z: [255, 178, 102], // laranja
     C: [255, 255, 102], I: [255, 255, 102], O: [255, 255, 102], U: [255, 255, 102], // amarelo
-    D: [255, 102, 255], J: [255, 102, 255], P: [255, 102, 255], V: [255, 102, 255], // roxo
-    E: [255, 178, 102], K: [255, 178, 102], Q: [255, 178, 102], W: [255, 178, 102], // laranja
-    F: [102, 255, 255], L: [102, 255, 255], R: [102, 255, 255], x: [102, 255, 255] // cyan
+    D: [102, 255, 102], J: [102, 255, 102], P: [102, 255, 102], V: [102, 255, 102], // verde
+    E: [102, 255, 255], K: [102, 255, 255], Q: [102, 255, 255], W: [102, 255, 255], // cyan
+    F: [255, 102, 255], L: [255, 102, 255], R: [255, 102, 255], x: [255, 102, 255] // roxo 
   };
 
   if (colors[letter]) {
@@ -40,15 +40,12 @@ class Target {
   draw() {
     // Definir cor do círculo principal
     let circleColor;
-    circleColor = getColorFromLetter(this.label.charAt(0));
 
-    /*
     if (this.clickedState === "correct") {
-      circleColor = color(0, 200, 0); // Verde se correto
+      circleColor = color(160, 160, 160); // cinzento se correto
     } else {
       circleColor = getColorFromLetter(this.label.charAt(0));
     }
-    */
 
     fill(circleColor);
     circle(this.x, this.y, this.width);
