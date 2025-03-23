@@ -48,7 +48,7 @@ class Target {
     } else {
       circleColor = getColorFromLetter(this.label.charAt(0));
     }
-      */
+    */
 
     fill(circleColor);
     circle(this.x, this.y, this.width);
