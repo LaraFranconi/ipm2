@@ -5,7 +5,7 @@ function getColorFromLetter(letter) {
     C: [255, 255, 102], J: [255, 255, 102], R: [255, 255, 102], // amarelo
     D: [141, 247, 141], K: [141, 247, 141], S: [141, 247, 141], // verde
     E: [164, 252, 252], L: [164, 252, 252], T: [164, 252, 252], // ciano
-    F: [120, 162, 245], M: [120, 162, 245], V: [120, 162, 245], // azul 
+    F: [84, 139, 247],  M: [84, 139, 247],  V: [84, 139, 247], // azul 
     G: [177, 107, 250], O: [177, 107, 250], W: [177, 107, 250], // rojo 
   };
 
@@ -37,19 +37,19 @@ class Target {
     return dist(this.x, this.y, mouse_x, mouse_y) < this.width / 2;
   }
 
-// Muda a cor dependendo do estado
-draw() {
+  // Muda a cor dependendo do estado
+  draw() {
     // Definir cor do círculo principal
     let circleColor;
 
     if (this.clickedState === "correct") {
-      // Escurecer a cor original
-      const originalColor = getColorFromLetter(this.label.charAt(0));
-      circleColor = color(
-          red(originalColor) * 0.3, // Reduzir o componente vermelho
-          green(originalColor) * 0.3, // Reduzir o componente verde
-          blue(originalColor) * 0.3  // Reduzir o componente azul
-      );
+        // Escurecer a cor original
+        const originalColor = getColorFromLetter(this.label.charAt(0));
+        circleColor = color(
+            red(originalColor) * 0.3,
+            green(originalColor) * 0.3,
+            blue(originalColor) * 0.3
+        );
     } else {
         circleColor = getColorFromLetter(this.label.charAt(0));
     }
@@ -57,35 +57,43 @@ draw() {
     fill(circleColor);
     circle(this.x, this.y, this.width);
 
-    // Pegar a primeira letra da legenda e transformar em maiúscula
+    // Desenhar a letra de fundo (grande e transparente)
     const initial = this.label.charAt(0).toUpperCase();
-
-    // Definir uma cor levemente mais escura para a letra de fundo
-    let bgColor = color(0, 0, 0, 50);
-
-    // Desenhar a letra de fundo primeiro (grande e levemente transparente)
     textAlign(CENTER, CENTER);
     textFont("Arial", this.width * 0.8); // Letra grande proporcional ao círculo
-    fill(bgColor);
-    text(initial, this.x, this.y + 5); // Letra centralizada antes do texto principal
+    fill(0, 0, 0, 50); // Cor levemente transparente
+    text(initial, this.x, this.y + 5); // Letra centralizada
 
-    // Agora desenhamos o texto principal na frente com contorno
-    textFont("Arial", 17);
+    // Dividir o texto em partes (separado por espaços e preservando hífens)
+    let words = this.label.split(' ').flatMap(word => {
+      return word; // Palavra sem hífen permanece inalterada
+    });
+
+    // Ajustar o alinhamento do texto
+    textFont("Arial", 21);
     textStyle(BOLD);
 
-    // Simular contorno branco desenhando o texto várias vezes ao redor
-    fill(255); // Cor branca para o contorno
-    for (let dx = -2; dx <= 2; dx++) {
-        for (let dy = -2; dy <= 2; dy++) {
-            if (dx !== 0 || dy !== 0) {
-                text(this.label, this.x + dx, this.y + dy);
+    // Desenhar cada palavra em uma linha separada
+    const lineHeight = 25; // Altura entre as linhas
+    const startY = this.y - (lineHeight * (words.length - 1)) / 2; // Ajustar posição inicial
+
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+
+        // Simular contorno branco desenhando o texto várias vezes ao redor
+        fill(255); // Cor branca para o contorno
+        for (let dx = -2; dx <= 2; dx++) {
+            for (let dy = -2; dy <= 2; dy++) {
+                if (dx !== 0 || dy !== 0) {
+                    text(word, this.x + dx, startY + i * lineHeight + dy);
+                }
             }
         }
-    }
 
-    // Desenhar o texto principal na frente
-    fill(color(0, 0, 0)); // Cor preta para o texto principal
-    noStroke(); // Garantir que não há contorno adicional
-    text(this.label, this.x, this.y);
+        // Desenhar o texto principal na frente
+        fill(color(0, 0, 0)); // Cor preta para o texto principal
+        noStroke();
+        text(word, this.x, startY + i * lineHeight);
+    }
   }
 }
