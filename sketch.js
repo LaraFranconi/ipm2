@@ -65,7 +65,8 @@ function draw()
         
     // Draw all targets
 	for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
-    
+
+    textStyle(NORMAL); //force the text printed to be non-bold after target drawing;
     // Draws the target label to be selected in the current trial. We include 
     // a black rectangle behind the trial label for optimal contrast in case 
     // you change the background colour of the sketch (DO NOT CHANGE THESE!)

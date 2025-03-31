@@ -78,22 +78,22 @@ class Target {
     const startY = this.y - (lineHeight * (words.length - 1)) / 2; // Ajustar posição inicial
 
     for (let i = 0; i < words.length; i++) {
-        const word = words[i];
+      const word = words[i];
 
-        // Simular contorno branco desenhando o texto várias vezes ao redor
-        fill(255); // Cor branca para o contorno
-        for (let dx = -2; dx <= 2; dx++) {
-            for (let dy = -2; dy <= 2; dy++) {
-                if (dx !== 0 || dy !== 0) {
-                    text(word, this.x + dx, startY + i * lineHeight + dy);
-                }
-            }
-        }
+      // Simular contorno branco desenhando o texto várias vezes ao redor
+      fill(255); // Cor branca para o contorno
+      for (let dx = -2; dx <= 2; dx++) {
+          for (let dy = -2; dy <= 2; dy++) {
+              if (dx !== 0 || dy !== 0) {
+                text(word, this.x + dx, startY + i * lineHeight + dy);
+              }
+          }
+      }
 
-        // Desenhar o texto principal na frente
-        fill(color(0, 0, 0)); // Cor preta para o texto principal
-        noStroke();
-        text(word, this.x, startY + i * lineHeight);
+      // Desenhar o texto principal na frente
+      fill(color(0, 0, 0)); // Cor preta para o texto principal
+      noStroke();
+      text(word, this.x, startY + i * lineHeight);
     }
   }
 }
